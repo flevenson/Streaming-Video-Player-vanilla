@@ -12,24 +12,29 @@
       <h1>StreamPlayer</h1>
     </header>
     <main>
-      <div>
-        <video class="video-main"></video>
+      <div class="video-holder">
+        <video class="video-main" src=""></video>
         <div class="video-controls">
-          <button class="play-btn"><img class="play-icon" src="./assets/play-sign"></button>
+          <button class="play-btn"><img class="play-icon" src="./assets/play-sign.svg" alt="play icon"></button>
           <div class="progress-bg">
             <div class="progress-fg"></div>
           </div>
           <p class="current-time">0:00</p>
+          <p class="slash">/</p>
           <p class="duration">0:00</p>
         </div>
       </div>
     </main>
     <aside>
       <div class="video-list">
-        <div></div>
-        <div></div>
+        <div class="playlist-header">
+          <img class="playlist-icon" src="./assets/playlist.svg" alt="playlist icon">
+          <h2>Playlist</h2>
+        </div>
+        <div class="video-option-1"></div>
+        <div class="video-option-2"></div>
       </div>
     </aside>
-    <script src="//cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
   </body>
 </html>
