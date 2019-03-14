@@ -1,0 +1,22 @@
+{
+  "name": "streaming-video-player-vanilla",
+  "version": "1.0.0",
+  "description": "a streaming video player",
+  "main": "scripts.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flevenson/Streaming-Video-Player-vanilla.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flevenson/Streaming-Video-Player-vanilla/issues"
+  },
+  "homepage": "https://github.com/flevenson/Streaming-Video-Player-vanilla#readme",
+  "dependencies": {
+    "hls.js": "^0.12.4"
+  }
+}
