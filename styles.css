@@ -83,8 +83,46 @@ main {
 aside {
   grid-column: 2 / span 1;
   grid-row: 2 / span 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .video-list {
   background-color: #CECECE;
+  height: 400px;
+  width: 90%;
+  margin-top: 50px;
+  box-shadow: 0 0 7px 1px #00000075
+}
+
+.playlist-header {
+  height: 65px;
+  background-color: #4A5B63;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  padding-left: 10px;
+}
+
+h2 {
+  color: #43A9FE;
+  font-size: 2rem;
+  margin-left: 10px;
+}
+
+.playlist-icon {
+  height: 30px;
+}
+
+.video-option-1 {
+  background-color: #FCFEFC;
+  height: 65px;
+  width: 100%;
+}
+
+.video-option-2 {
+  background-color: #E5E5E5;
+  height: 65px;
+  width: 100%;
 }
