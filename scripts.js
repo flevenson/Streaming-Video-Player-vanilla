@@ -24,13 +24,13 @@ if (Hls.isSupported()) {
             this.vidProgress.style.width = ((this.video.currentTime / this.video.duration) * 100 + "%");
         };
         MainVideoControls.prototype.seek = function (event) {
-            console.log(event.type);
             var seekBarEnd = this.seekBar.getBoundingClientRect().right;
             var seekBarStart = this.seekBar.getBoundingClientRect().left;
             var clickLocation = event.clientX - seekBarStart;
             var seekBarLength = seekBarEnd - seekBarStart;
             this.video.currentTime = (clickLocation / seekBarLength) * this.video.duration;
             this.video.play();
+            this.playButton.setAttribute('src', './assets/pause.svg');
         };
         return MainVideoControls;
     }());
