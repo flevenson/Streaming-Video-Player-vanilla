@@ -35,18 +35,31 @@ main {
 
 .video-holder {
   background-color: black;
-  height: 400px;
-  width: 700px;
+  height: 350px;
+  width: 1000px;
   margin-top: 50px;
   margin-left: 30px;
   box-shadow: 0px 2px 4px #00000078;
+}
+
+.video-main {
+  width: 1000px;
+}
+
+.video-holder .video-controls {
+  opacity: 0;
+}
+
+.video-holder:hover .video-controls {
+  opacity: 1;
 }
 
 .video-controls {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 200px;
+  position: relative;
+  bottom: 48px;
   margin-left: 10px;
 }
 
@@ -66,7 +79,7 @@ main {
 .progress-fg {
   background-color: #43A9FE;
   height: 100%;
-  width: 10%;
+  width: 0%;
 }
 
 .current-time, .duration, .slash {
@@ -74,6 +87,10 @@ main {
   font-size: 1rem;
   padding-left: 3px;
 
+}
+
+button {
+  outline: none;
 }
 
 .play-icon {
@@ -109,6 +126,7 @@ h2 {
   color: #43A9FE;
   font-size: 2rem;
   margin-left: 10px;
+  font-family: 'Lobster', cursive;
 }
 
 .playlist-icon {
