@@ -28,13 +28,13 @@ if(Hls.isSupported()) {
     }
 
     seek(event): void {
-      console.log(event.type)
       let seekBarEnd: number = this.seekBar.getBoundingClientRect().right;
       let seekBarStart: number = this.seekBar.getBoundingClientRect().left;
       let clickLocation: number = event.clientX - seekBarStart;
       let seekBarLength = seekBarEnd - seekBarStart;
       this.video.currentTime = (clickLocation/seekBarLength) * this.video.duration;
       this.video.play()
+      this.playButton.setAttribute('src', './assets/pause.svg')
     }
   }
 
@@ -69,8 +69,6 @@ if(Hls.isSupported()) {
   mainVideoControls.seekBar.onclick = function(event) {
     mainVideoControls.seek(event)
   }
-
-
 
   let hls = new Hls();
   hls.attachMedia(mainVideoControls.video);
