@@ -68,13 +68,6 @@ if (Hls.isSupported()) {
         mainVideoControls_1.seek(event);
     };
     var hls_1 = new Hls();
-    // hls_1.attachMedia(mainVideoControls_1.video);
-    // hls_1.on(Hls.Events.MEDIA_ATTACHED, function () {
-    //     hls_1.loadSource("https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8");
-    //     hls_1.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-    //         console.log("manifest loaded, found " + data.levels.length + " quality level");
-    //     });
-    // });
     videoOptions.videoOptionOne.onclick = function () {
         hls_1.attachMedia(mainVideoControls_1.video);
         hls_1.on(Hls.Events.MEDIA_ATTACHED, function () {
