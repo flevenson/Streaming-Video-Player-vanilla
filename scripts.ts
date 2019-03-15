@@ -1,59 +1,77 @@
 if(Hls.isSupported()) {
 
   console.log('HLS Supported!')
-
-  const video: HTMLVideoElement = document.querySelector('.video-main');
-  const vidCurrentTime: HTMLParagraphElement = document.querySelector('.current-time');
-  const vidProgress: HTMLParagraphElement = document.querySelector('.progress-fg');
-  const seekBar: HTMLDivElement = document.querySelector('.progress-bg');
-  const vidDuration: HTMLDivElement = document.querySelector('.duration');
-  const playButton: HTMLButtonElement = document.querySelector('.play-btn');
-  const playButtonIcon: HTMLImageElement = document.querySelector('.play-icon');
   
+  class MainVideoControls {
+    video: HTMLVideoElement = document.querySelector('.video-main');
+    vidCurrentTime: HTMLParagraphElement = document.querySelector('.current-time');
+    vidProgress: HTMLParagraphElement = document.querySelector('.progress-fg');
+    seekBar: HTMLDivElement = document.querySelector('.progress-bg');
+    vidDuration: HTMLDivElement = document.querySelector('.duration');
+    playButton: HTMLButtonElement = document.querySelector('.play-btn');
+    playButtonIcon: HTMLImageElement = document.querySelector('.play-icon');
 
-  const setTime = function(time: number): string {
+    constructor(){  }
 
-    let minutes: number = Math.floor(time / 60)
-    let seconds: string = (('0' + Math.floor(time - minutes * 60)).substr(-2))
-    return `${minutes}:${seconds}`
-  }
+    togglePlaying(): void {
+      if(this.video.paused){
+        this.video.play();
+        this.playButtonIcon.setAttribute('src', './assets/pause.svg')
+      } else {
+        this.video.pause();
+        this.playButtonIcon.setAttribute('src', './assets/play-sign.svg')
+      }
+    }
 
-  playButton.onclick = function(): void {
-    if(video.paused){
-      video.play();
-      playButtonIcon.setAttribute('src', './assets/pause.svg')
-    } else {
-      video.pause();
-      playButtonIcon.setAttribute('src', './assets/play-sign.svg')
+    updateProgressBar(): void {
+      this.vidProgress.style.width = (`${(this.video.currentTime / this.video.duration) * 100}%`)
+    }
+
+    seek(event): void {
+      let seekBarEnd: number = this.seekBar.getBoundingClientRect().right;
+      let seekBarStart: number = this.seekBar.getBoundingClientRect().left;
+      let clickLocation: number = event.clientX - seekBarStart;
+      let seekBarLength = seekBarEnd - seekBarStart;
+      this.video.currentTime = (clickLocation/seekBarLength) * this.video.duration;
+      this.video.play()
+      this.playButton.setAttribute('src', './assets/pause.svg')
     }
   }
 
-  video.ontimeupdate = function() {
-    vidCurrentTime.innerText = setTime(video.currentTime)
-    updateProgressBar()
+  
+  class TimeSettings {
+    
+    setTime(time: number): string {
+      let minutes: number = Math.floor(time / 60)
+      let seconds: string = (('0' + Math.floor(time - minutes * 60)).substr(-2))
+      return `${minutes}:${seconds}`
+    }
+
+
   }
 
-  video.onloadedmetadata = function () {
-    vidDuration.innerText = setTime(video.duration)
+  let mainVideoControls = new MainVideoControls
+  let timeSettings = new TimeSettings
+
+  mainVideoControls.playButton.onclick = function(): void {
+    mainVideoControls.togglePlaying()
   }
 
-  const updateProgressBar = function(): void {
-    vidProgress.style.width = (`${(video.currentTime / video.duration) * 100}%`)
+  mainVideoControls.video.ontimeupdate = function() {
+    mainVideoControls.vidCurrentTime.innerText = timeSettings.setTime(mainVideoControls.video.currentTime)
+    mainVideoControls.updateProgressBar()
   }
 
-  seekBar.onclick = function(event) {
-    let seekBarEnd: number = seekBar.getBoundingClientRect().right;
-    let seekBarStart: number = seekBar.getBoundingClientRect().left;
-    let clickLocation: number = event.clientX - seekBarStart;
-    let seekBarLength = seekBarEnd - seekBarStart;
-    video.currentTime = (clickLocation/seekBarLength) * video.duration;
-    video.play()
+  mainVideoControls.video.onloadedmetadata = function () {
+    mainVideoControls.vidDuration.innerText = timeSettings.setTime(mainVideoControls.video.duration)
   }
 
-
+  mainVideoControls.seekBar.onclick = function(event) {
+    mainVideoControls.seek(event)
+  }
 
   let hls = new Hls();
-  hls.attachMedia(video);
+  hls.attachMedia(mainVideoControls.video);
   hls.on(Hls.Events.MEDIA_ATTACHED, function() {
     hls.loadSource("https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8")
     hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {

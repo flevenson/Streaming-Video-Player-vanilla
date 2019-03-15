@@ -1,47 +1,66 @@
 if (Hls.isSupported()) {
     console.log('HLS Supported!');
-    var video_1 = document.querySelector('.video-main');
-    var vidCurrentTime_1 = document.querySelector('.current-time');
-    var vidProgress_1 = document.querySelector('.progress-fg');
-    var seekBar_1 = document.querySelector('.progress-bg');
-    var vidDuration_1 = document.querySelector('.duration');
-    var playButton = document.querySelector('.play-btn');
-    var playButtonIcon_1 = document.querySelector('.play-icon');
-    var setTime_1 = function (time) {
-        var minutes = Math.floor(time / 60);
-        var seconds = (('0' + Math.floor(time - minutes * 60)).substr(-2));
-        return minutes + ":" + seconds;
-    };
-    playButton.onclick = function () {
-        if (video_1.paused) {
-            video_1.play();
-            playButtonIcon_1.setAttribute('src', './assets/pause.svg');
+    var MainVideoControls = /** @class */ (function () {
+        function MainVideoControls() {
+            this.video = document.querySelector('.video-main');
+            this.vidCurrentTime = document.querySelector('.current-time');
+            this.vidProgress = document.querySelector('.progress-fg');
+            this.seekBar = document.querySelector('.progress-bg');
+            this.vidDuration = document.querySelector('.duration');
+            this.playButton = document.querySelector('.play-btn');
+            this.playButtonIcon = document.querySelector('.play-icon');
         }
-        else {
-            video_1.pause();
-            playButtonIcon_1.setAttribute('src', './assets/play-sign.svg');
+        MainVideoControls.prototype.togglePlaying = function () {
+            if (this.video.paused) {
+                this.video.play();
+                this.playButtonIcon.setAttribute('src', './assets/pause.svg');
+            }
+            else {
+                this.video.pause();
+                this.playButtonIcon.setAttribute('src', './assets/play-sign.svg');
+            }
+        };
+        MainVideoControls.prototype.updateProgressBar = function () {
+            this.vidProgress.style.width = ((this.video.currentTime / this.video.duration) * 100 + "%");
+        };
+        MainVideoControls.prototype.seek = function (event) {
+            var seekBarEnd = this.seekBar.getBoundingClientRect().right;
+            var seekBarStart = this.seekBar.getBoundingClientRect().left;
+            var clickLocation = event.clientX - seekBarStart;
+            var seekBarLength = seekBarEnd - seekBarStart;
+            this.video.currentTime = (clickLocation / seekBarLength) * this.video.duration;
+            this.video.play();
+            this.playButton.setAttribute('src', './assets/pause.svg');
+        };
+        return MainVideoControls;
+    }());
+    var TimeSettings = /** @class */ (function () {
+        function TimeSettings() {
         }
+        TimeSettings.prototype.setTime = function (time) {
+            var minutes = Math.floor(time / 60);
+            var seconds = (('0' + Math.floor(time - minutes * 60)).substr(-2));
+            return minutes + ":" + seconds;
+        };
+        return TimeSettings;
+    }());
+    var mainVideoControls_1 = new MainVideoControls;
+    var timeSettings_1 = new TimeSettings;
+    mainVideoControls_1.playButton.onclick = function () {
+        mainVideoControls_1.togglePlaying();
     };
-    video_1.ontimeupdate = function () {
-        vidCurrentTime_1.innerText = setTime_1(video_1.currentTime);
-        updateProgressBar_1();
+    mainVideoControls_1.video.ontimeupdate = function () {
+        mainVideoControls_1.vidCurrentTime.innerText = timeSettings_1.setTime(mainVideoControls_1.video.currentTime);
+        mainVideoControls_1.updateProgressBar();
     };
-    video_1.onloadedmetadata = function () {
-        vidDuration_1.innerText = setTime_1(video_1.duration);
+    mainVideoControls_1.video.onloadedmetadata = function () {
+        mainVideoControls_1.vidDuration.innerText = timeSettings_1.setTime(mainVideoControls_1.video.duration);
     };
-    var updateProgressBar_1 = function () {
-        vidProgress_1.style.width = ((video_1.currentTime / video_1.duration) * 100 + "%");
-    };
-    seekBar_1.onclick = function (event) {
-        var seekBarEnd = seekBar_1.getBoundingClientRect().right;
-        var seekBarStart = seekBar_1.getBoundingClientRect().left;
-        var clickLocation = event.clientX - seekBarStart;
-        var seekBarLength = seekBarEnd - seekBarStart;
-        video_1.currentTime = (clickLocation / seekBarLength) * video_1.duration;
-        video_1.play();
+    mainVideoControls_1.seekBar.onclick = function (event) {
+        mainVideoControls_1.seek(event);
     };
     var hls_1 = new Hls();
-    hls_1.attachMedia(video_1);
+    hls_1.attachMedia(mainVideoControls_1.video);
     hls_1.on(Hls.Events.MEDIA_ATTACHED, function () {
         hls_1.loadSource("https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8");
         hls_1.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
