@@ -30,7 +30,7 @@ if (Hls.isSupported()) {
             var seekBarLength = seekBarEnd - seekBarStart;
             this.video.currentTime = (clickLocation / seekBarLength) * this.video.duration;
             this.video.play();
-            this.playButton.setAttribute('src', './assets/pause.svg');
+            this.playButtonIcon.setAttribute('src', './assets/pause.svg');
         };
         return MainVideoControls;
     }());
