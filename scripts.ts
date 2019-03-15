@@ -34,7 +34,7 @@ if(Hls.isSupported()) {
       let seekBarLength = seekBarEnd - seekBarStart;
       this.video.currentTime = (clickLocation/seekBarLength) * this.video.duration;
       this.video.play()
-      this.playButton.setAttribute('src', './assets/pause.svg')
+      this.playButtonIcon.setAttribute('src', './assets/pause.svg')
     }
   }
 
@@ -47,11 +47,18 @@ if(Hls.isSupported()) {
       return `${minutes}:${seconds}`
     }
 
+  }
+
+  class VideoOptions {
+    videoOptionOne: HTMLDivElement = document.querySelector('.video-option-1')
+    videoOptionTwo: HTMLDivElement = document.querySelector('.video-option-2')
+
 
   }
 
   let mainVideoControls = new MainVideoControls
   let timeSettings = new TimeSettings
+  let videoOptions = new VideoOptions
 
   mainVideoControls.playButton.onclick = function(): void {
     mainVideoControls.togglePlaying()
@@ -71,11 +78,28 @@ if(Hls.isSupported()) {
   }
 
   let hls = new Hls();
-  hls.attachMedia(mainVideoControls.video);
-  hls.on(Hls.Events.MEDIA_ATTACHED, function() {
-    hls.loadSource("https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8")
-    hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
-      console.log("manifest loaded, found " + data.levels.length + " quality level")
+
+  videoOptions.videoOptionOne.onclick = function() {
+    hls.attachMedia(mainVideoControls.video);
+    hls.on(Hls.Events.MEDIA_ATTACHED, function() {
+      hls.loadSource("https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8")
+      hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
+        console.log("manifest loaded, found " + data.levels.length + " quality levels")
+      })
     })
-  })
+    mainVideoControls.vidProgress.style.width = '0%'
+    mainVideoControls.togglePlaying()
+  }
+
+  videoOptions.videoOptionTwo.onclick = function() {
+    hls.attachMedia(mainVideoControls.video);
+    hls.on(Hls.Events.MEDIA_ATTACHED, function() {
+      hls.loadSource("https://video-dev.github.io/streams/test_001/stream.m3u8")
+      hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
+        console.log("manifest loaded, found " + data.levels.length + " quality levels")
+      })
+    })
+    mainVideoControls.vidProgress.style.width = '0%'
+    mainVideoControls.togglePlaying()
+  }
 }
