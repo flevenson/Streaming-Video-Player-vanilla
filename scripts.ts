@@ -3,56 +3,71 @@ if(Hls.isSupported()) {
   console.log('HLS Supported!')
   
   class MainVideoControls {
-  video: HTMLVideoElement = document.querySelector('.video-main');
-  vidCurrentTime: HTMLParagraphElement = document.querySelector('.current-time');
-  vidProgress: HTMLParagraphElement = document.querySelector('.progress-fg');
-  seekBar: HTMLDivElement = document.querySelector('.progress-bg');
-  vidDuration: HTMLDivElement = document.querySelector('.duration');
-  playButton: HTMLButtonElement = document.querySelector('.play-btn');
-  playButtonIcon: HTMLImageElement = document.querySelector('.play-icon');
+    video: HTMLVideoElement = document.querySelector('.video-main');
+    vidCurrentTime: HTMLParagraphElement = document.querySelector('.current-time');
+    vidProgress: HTMLParagraphElement = document.querySelector('.progress-fg');
+    seekBar: HTMLDivElement = document.querySelector('.progress-bg');
+    vidDuration: HTMLDivElement = document.querySelector('.duration');
+    playButton: HTMLButtonElement = document.querySelector('.play-btn');
+    playButtonIcon: HTMLImageElement = document.querySelector('.play-icon');
 
-  constructor(){  }
-  }
+    constructor(){  }
 
-  let mainVideoControls = new MainVideoControls
+    togglePlaying(): void {
+      if(this.video.paused){
+        this.video.play();
+        this.playButtonIcon.setAttribute('src', './assets/pause.svg')
+      } else {
+        this.video.pause();
+        this.playButtonIcon.setAttribute('src', './assets/play-sign.svg')
+      }
+    }
 
-  const setTime = function(time: number): string {
+    updateProgressBar(): void {
+      this.vidProgress.style.width = (`${(this.video.currentTime / this.video.duration) * 100}%`)
+    }
 
-    let minutes: number = Math.floor(time / 60)
-    let seconds: string = (('0' + Math.floor(time - minutes * 60)).substr(-2))
-    return `${minutes}:${seconds}`
-  }
-
-  mainVideoControls.playButton.onclick = function(): void {
-    if(mainVideoControls.video.paused){
-      mainVideoControls.video.play();
-      mainVideoControls.playButtonIcon.setAttribute('src', './assets/pause.svg')
-    } else {
-      mainVideoControls.video.pause();
-      mainVideoControls.playButtonIcon.setAttribute('src', './assets/play-sign.svg')
+    seek(event): void {
+      console.log(event.type)
+      let seekBarEnd: number = this.seekBar.getBoundingClientRect().right;
+      let seekBarStart: number = this.seekBar.getBoundingClientRect().left;
+      let clickLocation: number = event.clientX - seekBarStart;
+      let seekBarLength = seekBarEnd - seekBarStart;
+      this.video.currentTime = (clickLocation/seekBarLength) * this.video.duration;
+      this.video.play()
     }
   }
 
+  
+  class TimeSettings {
+    
+    setTime(time: number): string {
+      let minutes: number = Math.floor(time / 60)
+      let seconds: string = (('0' + Math.floor(time - minutes * 60)).substr(-2))
+      return `${minutes}:${seconds}`
+    }
+
+
+  }
+
+  let mainVideoControls = new MainVideoControls
+  let timeSettings = new TimeSettings
+
+  mainVideoControls.playButton.onclick = function(): void {
+    mainVideoControls.togglePlaying()
+  }
+
   mainVideoControls.video.ontimeupdate = function() {
-    mainVideoControls.vidCurrentTime.innerText = setTime(mainVideoControls.video.currentTime)
-    updateProgressBar()
+    mainVideoControls.vidCurrentTime.innerText = timeSettings.setTime(mainVideoControls.video.currentTime)
+    mainVideoControls.updateProgressBar()
   }
 
   mainVideoControls.video.onloadedmetadata = function () {
-    mainVideoControls.vidDuration.innerText = setTime(mainVideoControls.video.duration)
-  }
-
-  const updateProgressBar = function(): void {
-    mainVideoControls.vidProgress.style.width = (`${(mainVideoControls.video.currentTime / mainVideoControls.video.duration) * 100}%`)
+    mainVideoControls.vidDuration.innerText = timeSettings.setTime(mainVideoControls.video.duration)
   }
 
   mainVideoControls.seekBar.onclick = function(event) {
-    let seekBarEnd: number = mainVideoControls.seekBar.getBoundingClientRect().right;
-    let seekBarStart: number = mainVideoControls.seekBar.getBoundingClientRect().left;
-    let clickLocation: number = event.clientX - seekBarStart;
-    let seekBarLength = seekBarEnd - seekBarStart;
-    mainVideoControls.video.currentTime = (clickLocation/seekBarLength) * mainVideoControls.video.duration;
-    mainVideoControls.video.play()
+    mainVideoControls.seek(event)
   }
 
 
