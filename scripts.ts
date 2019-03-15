@@ -87,6 +87,8 @@ if(Hls.isSupported()) {
         console.log("manifest loaded, found " + data.levels.length + " quality levels")
       })
     })
+    mainVideoControls.vidProgress.style.width = '0%'
+    mainVideoControls.togglePlaying()
   }
 
   videoOptions.videoOptionTwo.onclick = function() {
@@ -97,5 +99,7 @@ if(Hls.isSupported()) {
         console.log("manifest loaded, found " + data.levels.length + " quality levels")
       })
     })
+    mainVideoControls.vidProgress.style.width = '0%'
+    mainVideoControls.togglePlaying()
   }
 }

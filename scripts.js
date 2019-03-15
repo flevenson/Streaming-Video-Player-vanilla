@@ -76,6 +76,8 @@ if (Hls.isSupported()) {
                 console.log("manifest loaded, found " + data.levels.length + " quality levels");
             });
         });
+        mainVideoControls_1.vidProgress.style.width = '0%';
+        mainVideoControls_1.togglePlaying();
     };
     videoOptions.videoOptionTwo.onclick = function () {
         hls_1.attachMedia(mainVideoControls_1.video);
@@ -85,5 +87,7 @@ if (Hls.isSupported()) {
                 console.log("manifest loaded, found " + data.levels.length + " quality levels");
             });
         });
+        mainVideoControls_1.vidProgress.style.width = '0%';
+        mainVideoControls_1.togglePlaying();
     };
 }
