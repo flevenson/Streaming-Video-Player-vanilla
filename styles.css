@@ -1,3 +1,7 @@
+p {
+  font-family: 'Overpass', sans-serif;
+}
+
 body {
   display: grid;
   grid-template-columns: 1fr 300px;
@@ -35,7 +39,7 @@ main {
 
 .video-holder {
   background-color: black;
-  height: 350px;
+  height: 500px;
   width: 1000px;
   margin-top: 50px;
   margin-left: 30px;
@@ -96,6 +100,10 @@ button {
   outline: none;
 }
 
+button, .progress-bg, .video-option-1, .video-option-2 {
+  cursor: pointer;
+}
+
 .play-icon {
   height: 30px;
 }
@@ -136,14 +144,27 @@ h2 {
   height: 30px;
 }
 
-.video-option-1 {
-  background-color: #FCFEFC;
+.video-option-1, .video-option-2 {
   height: 65px;
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.video-option-1 {
+  background-color: #FCFEFC;
+}
+
+.still-frame {
+  height: 50px;
 }
 
 .video-option-2 {
   background-color: #E5E5E5;
-  height: 65px;
-  width: 100%;
+}
+
+.arte-china-still {
+  margin-right: 35px;
 }
