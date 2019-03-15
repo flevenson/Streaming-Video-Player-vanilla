@@ -48,10 +48,13 @@ main {
 
 .video-holder .video-controls {
   opacity: 0;
+  transition: all .5s;
 }
 
 .video-holder:hover .video-controls {
   opacity: 1;
+  transition: all .5s;
+
 }
 
 .video-controls {
