@@ -58,8 +58,11 @@ if(Hls.isSupported()) {
   }
 
   class VideoOptions {
-    videoOptionOne: HTMLDivElement = document.querySelector('.video-option-1')
-    videoOptionTwo: HTMLDivElement = document.querySelector('.video-option-2')
+    
+    constructor(public videoOptionOne: HTMLDivElement, public videoOptionTwo: HTMLDivElement){
+      this.videoOptionOne = videoOptionOne;
+      this.videoOptionTwo = videoOptionTwo;
+    }
 
 
   }
@@ -74,7 +77,7 @@ if(Hls.isSupported()) {
     document.querySelector('.play-icon')
   )
   let timeSettings = new TimeSettings
-  let videoOptions = new VideoOptions
+  let videoOptions = new VideoOptions(document.querySelector('.video-option-1'), document.querySelector('.video-option-2'))
 
   mainVideoControls.playButton.onclick = function(): void {
     mainVideoControls.togglePlaying()

@@ -52,15 +52,17 @@ if (Hls.isSupported()) {
         return TimeSettings;
     }());
     var VideoOptions = /** @class */ (function () {
-        function VideoOptions() {
-            this.videoOptionOne = document.querySelector('.video-option-1');
-            this.videoOptionTwo = document.querySelector('.video-option-2');
+        function VideoOptions(videoOptionOne, videoOptionTwo) {
+            this.videoOptionOne = videoOptionOne;
+            this.videoOptionTwo = videoOptionTwo;
+            this.videoOptionOne = videoOptionOne;
+            this.videoOptionTwo = videoOptionTwo;
         }
         return VideoOptions;
     }());
     var mainVideoControls_1 = new MainVideoControls(document.querySelector('.video-main'), document.querySelector('.current-time'), document.querySelector('.progress-fg'), document.querySelector('.progress-bg'), document.querySelector('.duration'), document.querySelector('.play-btn'), document.querySelector('.play-icon'));
     var timeSettings_1 = new TimeSettings;
-    var videoOptions = new VideoOptions;
+    var videoOptions = new VideoOptions(document.querySelector('.video-option-1'), document.querySelector('.video-option-2'));
     mainVideoControls_1.playButton.onclick = function () {
         mainVideoControls_1.togglePlaying();
     };
