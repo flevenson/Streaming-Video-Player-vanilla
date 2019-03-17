@@ -3,15 +3,23 @@ if(Hls.isSupported()) {
   console.log('HLS Supported!')
   
   class MainVideoControls {
-    video: HTMLVideoElement = document.querySelector('.video-main');
-    vidCurrentTime: HTMLParagraphElement = document.querySelector('.current-time');
-    vidProgress: HTMLParagraphElement = document.querySelector('.progress-fg');
-    seekBar: HTMLDivElement = document.querySelector('.progress-bg');
-    vidDuration: HTMLDivElement = document.querySelector('.duration');
-    playButton: HTMLButtonElement = document.querySelector('.play-btn');
-    playButtonIcon: HTMLImageElement = document.querySelector('.play-icon');
-
-    constructor(){  }
+    
+    constructor(
+        public video: HTMLVideoElement,
+        public vidCurrentTime: HTMLParagraphElement,
+        public vidProgress: HTMLParagraphElement,
+        public seekBar: HTMLDivElement,
+        public vidDuration: HTMLDivElement,
+        public playButton: HTMLButtonElement,
+        public playButtonIcon: HTMLImageElement){
+          this.video = video;
+          this.vidCurrentTime = vidCurrentTime;
+          this.vidProgress = vidProgress;
+          this.seekBar = seekBar;
+          this.vidDuration = vidDuration;
+          this.playButton = playButton;
+          this.playButtonIcon = playButtonIcon;
+          }
 
     togglePlaying(): void {
       if(this.video.paused){
@@ -56,7 +64,15 @@ if(Hls.isSupported()) {
 
   }
 
-  let mainVideoControls = new MainVideoControls
+  let mainVideoControls = new MainVideoControls(
+    document.querySelector('.video-main'),
+    document.querySelector('.current-time'),
+    document.querySelector('.progress-fg'),
+    document.querySelector('.progress-bg'),
+    document.querySelector('.duration'),
+    document.querySelector('.play-btn'),
+    document.querySelector('.play-icon')
+  )
   let timeSettings = new TimeSettings
   let videoOptions = new VideoOptions
 

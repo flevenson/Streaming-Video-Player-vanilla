@@ -1,14 +1,21 @@
 if (Hls.isSupported()) {
     console.log('HLS Supported!');
     var MainVideoControls = /** @class */ (function () {
-        function MainVideoControls() {
-            this.video = document.querySelector('.video-main');
-            this.vidCurrentTime = document.querySelector('.current-time');
-            this.vidProgress = document.querySelector('.progress-fg');
-            this.seekBar = document.querySelector('.progress-bg');
-            this.vidDuration = document.querySelector('.duration');
-            this.playButton = document.querySelector('.play-btn');
-            this.playButtonIcon = document.querySelector('.play-icon');
+        function MainVideoControls(video, vidCurrentTime, vidProgress, seekBar, vidDuration, playButton, playButtonIcon) {
+            this.video = video;
+            this.vidCurrentTime = vidCurrentTime;
+            this.vidProgress = vidProgress;
+            this.seekBar = seekBar;
+            this.vidDuration = vidDuration;
+            this.playButton = playButton;
+            this.playButtonIcon = playButtonIcon;
+            this.video = video;
+            this.vidCurrentTime = vidCurrentTime;
+            this.vidProgress = vidProgress;
+            this.seekBar = seekBar;
+            this.vidDuration = vidDuration;
+            this.playButton = playButton;
+            this.playButtonIcon = playButtonIcon;
         }
         MainVideoControls.prototype.togglePlaying = function () {
             if (this.video.paused) {
@@ -51,7 +58,7 @@ if (Hls.isSupported()) {
         }
         return VideoOptions;
     }());
-    var mainVideoControls_1 = new MainVideoControls;
+    var mainVideoControls_1 = new MainVideoControls(document.querySelector('.video-main'), document.querySelector('.current-time'), document.querySelector('.progress-fg'), document.querySelector('.progress-bg'), document.querySelector('.duration'), document.querySelector('.play-btn'), document.querySelector('.play-icon'));
     var timeSettings_1 = new TimeSettings;
     var videoOptions = new VideoOptions;
     mainVideoControls_1.playButton.onclick = function () {
