@@ -11,7 +11,9 @@ if(Hls.isSupported()) {
         public seekBar: HTMLDivElement,
         public vidDuration: HTMLDivElement,
         public playButton: HTMLButtonElement,
-        public playButtonIcon: HTMLImageElement){
+        public playButtonIcon: HTMLImageElement,
+        public draggableCircle: HTMLImageElement,
+        public isDragging: boolean) {
           this.video = video;
           this.vidCurrentTime = vidCurrentTime;
           this.vidProgress = vidProgress;
@@ -19,6 +21,8 @@ if(Hls.isSupported()) {
           this.vidDuration = vidDuration;
           this.playButton = playButton;
           this.playButtonIcon = playButtonIcon;
+          this.draggableCircle = draggableCircle;
+          this.isDragging = isDragging
           }
 
     togglePlaying(): void {
@@ -33,6 +37,9 @@ if(Hls.isSupported()) {
 
     updateProgressBar(): void {
       this.vidProgress.style.width = (`${(this.video.currentTime / this.video.duration) * 100}%`)
+      if(!this.isDragging){
+        this.draggableCircle.style.left = (`${this.vidProgress.getBoundingClientRect().right - 55}px`)
+      }
     }
 
     seek(event): void {
@@ -44,6 +51,37 @@ if(Hls.isSupported()) {
       this.video.play()
       this.playButtonIcon.setAttribute('src', './assets/pause.svg')
     }
+
+    makeBallDraggable(elem): void {
+      let boundThis = this
+      elem.onmousedown = dragMouseDown;
+      let positionOne: number = 0;
+      let positionTwo: number = 0;
+      function dragMouseDown(e) {
+        boundThis.isDragging = true
+        e = e || window.event
+        e.preventDefault();
+        positionTwo = e.clientX;
+        document.onmousemove = drag;
+        document.onmouseup = stopDragging;
+      }
+
+      function drag(e): void {
+        e = e || window.event
+        e.preventDefault();
+        positionOne = positionTwo - e.clientX;
+        positionTwo = e.clientX;
+        elem.style.left = `${(elem.offsetLeft - positionOne)}px`;
+      }
+
+      function stopDragging(): void {
+        boundThis.isDragging = false
+        document.onmouseup = null;
+        document.onmousedown = null;
+        document.onmousemove = null;
+      }
+    }
+     
   }
 
   
@@ -64,7 +102,6 @@ if(Hls.isSupported()) {
       this.videoOptionTwo = videoOptionTwo;
     }
 
-
   }
 
   let mainVideoControls = new MainVideoControls(
@@ -74,7 +111,9 @@ if(Hls.isSupported()) {
     document.querySelector('.progress-bg'),
     document.querySelector('.duration'),
     document.querySelector('.play-btn'),
-    document.querySelector('.play-icon')
+    document.querySelector('.play-icon'),
+    document.querySelector('.draggable-circle'),
+    false
   )
   let timeSettings = new TimeSettings
   let videoOptions = new VideoOptions(document.querySelector('.video-option-1'), document.querySelector('.video-option-2'))
@@ -95,6 +134,8 @@ if(Hls.isSupported()) {
   mainVideoControls.seekBar.onclick = function(event) {
     mainVideoControls.seek(event)
   }
+
+  mainVideoControls.makeBallDraggable(mainVideoControls.draggableCircle)
 
   let hls = new Hls();
 
