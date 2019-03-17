@@ -1,7 +1,7 @@
 if (Hls.isSupported()) {
     console.log('HLS Supported!');
     var MainVideoControls = /** @class */ (function () {
-        function MainVideoControls(video, vidCurrentTime, vidProgress, seekBar, vidDuration, playButton, playButtonIcon) {
+        function MainVideoControls(video, vidCurrentTime, vidProgress, seekBar, vidDuration, playButton, playButtonIcon, draggableCircle, isDragging) {
             this.video = video;
             this.vidCurrentTime = vidCurrentTime;
             this.vidProgress = vidProgress;
@@ -9,6 +9,8 @@ if (Hls.isSupported()) {
             this.vidDuration = vidDuration;
             this.playButton = playButton;
             this.playButtonIcon = playButtonIcon;
+            this.draggableCircle = draggableCircle;
+            this.isDragging = isDragging;
             this.video = video;
             this.vidCurrentTime = vidCurrentTime;
             this.vidProgress = vidProgress;
@@ -16,6 +18,8 @@ if (Hls.isSupported()) {
             this.vidDuration = vidDuration;
             this.playButton = playButton;
             this.playButtonIcon = playButtonIcon;
+            this.draggableCircle = draggableCircle;
+            this.isDragging = isDragging;
         }
         MainVideoControls.prototype.togglePlaying = function () {
             if (this.video.paused) {
@@ -29,6 +33,9 @@ if (Hls.isSupported()) {
         };
         MainVideoControls.prototype.updateProgressBar = function () {
             this.vidProgress.style.width = ((this.video.currentTime / this.video.duration) * 100 + "%");
+            if (!this.isDragging) {
+                this.draggableCircle.style.left = (this.vidProgress.getBoundingClientRect().right - 55 + "px");
+            }
         };
         MainVideoControls.prototype.seek = function (event) {
             var seekBarEnd = this.seekBar.getBoundingClientRect().right;
@@ -38,6 +45,33 @@ if (Hls.isSupported()) {
             this.video.currentTime = (clickLocation / seekBarLength) * this.video.duration;
             this.video.play();
             this.playButtonIcon.setAttribute('src', './assets/pause.svg');
+        };
+        MainVideoControls.prototype.makeBallDraggable = function (elem) {
+            var boundThis = this;
+            elem.onmousedown = dragMouseDown;
+            var positionOne = 0;
+            var positionTwo = 0;
+            function dragMouseDown(e) {
+                boundThis.isDragging = true;
+                e = e || window.event;
+                e.preventDefault();
+                positionTwo = e.clientX;
+                document.onmousemove = drag;
+                document.onmouseup = stopDragging;
+            }
+            function drag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                positionOne = positionTwo - e.clientX;
+                positionTwo = e.clientX;
+                elem.style.left = (elem.offsetLeft - positionOne) + "px";
+            }
+            function stopDragging() {
+                boundThis.isDragging = false;
+                document.onmouseup = null;
+                document.onmousedown = null;
+                document.onmousemove = null;
+            }
         };
         return MainVideoControls;
     }());
@@ -60,7 +94,7 @@ if (Hls.isSupported()) {
         }
         return VideoOptions;
     }());
-    var mainVideoControls_1 = new MainVideoControls(document.querySelector('.video-main'), document.querySelector('.current-time'), document.querySelector('.progress-fg'), document.querySelector('.progress-bg'), document.querySelector('.duration'), document.querySelector('.play-btn'), document.querySelector('.play-icon'));
+    var mainVideoControls_1 = new MainVideoControls(document.querySelector('.video-main'), document.querySelector('.current-time'), document.querySelector('.progress-fg'), document.querySelector('.progress-bg'), document.querySelector('.duration'), document.querySelector('.play-btn'), document.querySelector('.play-icon'), document.querySelector('.draggable-circle'), false);
     var timeSettings_1 = new TimeSettings;
     var videoOptions = new VideoOptions(document.querySelector('.video-option-1'), document.querySelector('.video-option-2'));
     mainVideoControls_1.playButton.onclick = function () {
@@ -76,6 +110,7 @@ if (Hls.isSupported()) {
     mainVideoControls_1.seekBar.onclick = function (event) {
         mainVideoControls_1.seek(event);
     };
+    mainVideoControls_1.makeBallDraggable(mainVideoControls_1.draggableCircle);
     var hls_1 = new Hls();
     videoOptions.videoOptionOne.onclick = function () {
         hls_1.attachMedia(mainVideoControls_1.video);

@@ -81,6 +81,16 @@ main {
   background-color: #E3EFEF;
   height: 20px;
   margin-right: 10px;
+  margin-left: 10px;
+}
+
+.draggable-circle {
+  height: 30px;
+  width: 30px;
+  z-index: 10;
+  cursor: pointer;
+  position: absolute;
+  left: 4.3%;
 }
 
 .progress-fg {
