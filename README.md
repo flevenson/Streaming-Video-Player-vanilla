@@ -6,10 +6,6 @@ A custom made streaming Video Player using the HLS.js Library
 
 To create an Http Live Streaming video player in Typescript (compiled to vanilla javascript)
 
-## Future Iterations
-
-I plan to recreate this project using a modern framework
-
 ## Tech Used
 
 -Html5, CSS3, Javascript
@@ -25,3 +21,14 @@ I plan to recreate this project using a modern framework
 ## Screen Shot
 
 <img width="1280" alt="Screen Shot of completed project" src="https://user-images.githubusercontent.com/37809511/54402994-07b64280-4694-11e9-8f63-344e357ea75f.png">
+
+## Future Iterations
+
+I plan to recreate this project using a modern framework
+I also would like to add functionality of having the progress bar move with the seek ball as you drag it, and have the time also reflect where the ball is being dragged to, like in a typical video player like Youtube. 
+I think it would also be cool to have a small version of the video that represents the location you are seeking to.
+
+## Known Bugs
+
+Currently you can drag the seek ball outside of the seek bar. I would like to find a way to make that not happen.
+Also currently if you release the seek ball outside of the seek bar it does not function properly. I'm not quite sure why that is but I plan to figure that out as well.
