@@ -4,7 +4,11 @@ A custom made streaming Video Player using the HLS.js Library
 
 # Goals
 
-To practice using the HLS.js library before attempting with angular
+To create an Http Live Streaming video player in Typescript (compiled to vanilla javascript)
+
+## Future Iterations
+
+I plan to recreate this project using a modern framework
 
 ## Tech Used
 
