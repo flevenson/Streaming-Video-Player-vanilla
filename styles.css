@@ -103,7 +103,7 @@ main {
   color: #E3EFEF;
   font-size: 1rem;
   padding-left: 3px;
-
+  text-shadow: 0 0 1px black;
 }
 
 button {
